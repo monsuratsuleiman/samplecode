@@ -1,3 +1,4 @@
 
-rootProject.name = "samplecode"
+rootProject.name = "test"
+
 
