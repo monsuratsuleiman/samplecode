@@ -22,9 +22,8 @@ public class FileSubstringsExtractor {
         int skip = 0;
 
         while (keepExtracting) {
-            Pair<List<String>, Integer> iterationStringsAndMaxLength = extractSubstrings(path, charset, minimumSubstringLength, skip);
-            substringsTracker.addAll(iterationStringsAndMaxLength.getFirst());
-            Integer iterationMaxStringLength = iterationStringsAndMaxLength.getSecond();
+            Integer iterationMaxStringLength = extractSubstrings(substringsTracker, path, charset, minimumSubstringLength, skip);
+
             if (iterationMaxStringLength > minimumSubstringLength && iterationMaxStringLength > 1) {
                 skip++;
             } else {
@@ -34,11 +33,10 @@ public class FileSubstringsExtractor {
 
     }
 
-    private Pair<List<String>, Integer> extractSubstrings(Path path, String charset, int minimumSubstringLength, int skip) throws IOException {
+    private Integer extractSubstrings(InMemoryItemTracker substringsTracker, Path path, String charset, int minimumSubstringLength, int skip) throws IOException {
         int charInt;
         char charValue;
         String currentText = "";
-        ArrayList<String> allSubstrings = new ArrayList<>();
 
         try (BufferedReader reader = Files.newBufferedReader(path, Charset.forName(charset))) {
             reader.skip(skip);
@@ -47,12 +45,12 @@ public class FileSubstringsExtractor {
                 String stringValue = String.valueOf(charValue);
                 currentText = currentText + stringValue;
                 if (currentText.trim().length() >= minimumSubstringLength) {
-                    allSubstrings.add(currentText);
+                    substringsTracker.addAll(List.of(currentText));
                 }
             }
         }
 
-        return new Pair(allSubstrings, currentText.trim().length());
+        return currentText.trim().length();
     }
 
     private String getValidCharset(int characterLength) throws Exception {

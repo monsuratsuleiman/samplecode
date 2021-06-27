@@ -62,8 +62,7 @@ class FileSubstringsExtractorTest {
         fileSubstringsExtractor.extract(inputFile.toPath(),
                 8, 5, mockTracker);
 
-        verify(mockTracker, times(1)).addAll(any());
-        verify(mockTracker, times(1)).addAll(List.of());
+        verify(mockTracker, times(0)).addAll(any());
     }
 
     @Test
@@ -90,8 +89,7 @@ class FileSubstringsExtractorTest {
         fileSubstringsExtractor.extract(inputFile.toPath(),
                 8, 5, mockTracker);
 
-        verify(mockTracker, times(1)).addAll(any());
-        verify(mockTracker, times(1)).addAll(List.of());
+        verify(mockTracker, times(0)).addAll(any());
     }
 
     @Test
@@ -104,8 +102,10 @@ class FileSubstringsExtractorTest {
         fileSubstringsExtractor.extract(inputFile.toPath(),
                 8, 5, mockTracker);
 
-        verify(mockTracker, times(3)).addAll(any());
-        verify(mockTracker, times(1)).addAll(List.of("Hello", "Hello ", "Hello W"));
+        verify(mockTracker, times(5)).addAll(any());
+        verify(mockTracker, times(1)).addAll(List.of("Hello"));
+        verify(mockTracker, times(1)).addAll(List.of("Hello "));
+        verify(mockTracker, times(1)).addAll(List.of("Hello W"));
         verify(mockTracker, times(1)).addAll(List.of("ello W"));
         verify(mockTracker, times(1)).addAll(List.of("llo W"));
     }
